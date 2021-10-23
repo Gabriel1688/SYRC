@@ -1,8 +1,19 @@
 #include "Arduino.h"
 #include "ticksRead.h"
 
+int rLastStateCLK;// = digitalRead(CLK);
+int lLastStateCLK;// = digitalRead(CLK2);
+struct retVal r;
+struct retVal l;
+int lCurrentStateCLK;
+int rCurrentStateCLK;
+unsigned long secondCount = 0;
+int lCounter =0;
+int lLastTick =0;
+int rCounter =0;
+int rLastTick = 0;
 
-void wheelRight(){
+void wheelRight(int CLK1, int DT1){
 
 // handles ticks and counter
   rCurrentStateCLK = digitalRead(CLK1);
@@ -32,7 +43,7 @@ void wheelRight(){
     }
 }
 
-void wheelLeft(){
+void wheelLeft(int CLK3, int DT3){
 
 
 //handles counter and ticks
