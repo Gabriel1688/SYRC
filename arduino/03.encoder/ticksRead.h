@@ -3,17 +3,16 @@
 #ifndef TICKSREAD_H
 #define TICKSREAD_H
 
+#define CLK 4
+#define DT 5
+//right
+#define CLK2 2
+#define DT2 3
 
 
-int rLastStateCLK;
-int lLastStateCLK;
-int lCounter = 0;
-int lLastTick = 0;
-int rCounter = 0;
-int rLastTick = 0;
-int rCurrentStateCLK;
-unsigned long secondCount = 0;
-int lCurrentStateCLK;
+
+
+
 
 
 struct retVal {
@@ -22,17 +21,11 @@ struct retVal {
   int counter;
   
 };
-struct retVal r;
-struct retVal l;
 
-void wheelRight(int CLK1, int DT1){
-  
 
-  };
 
-void wheelLeft(int CLK3, int DT3){
-  
+void wheelRight(int CLK1, int DT1);
 
-  };
+void wheelLeft(int CLK3, int DT3);
 
 #endif
