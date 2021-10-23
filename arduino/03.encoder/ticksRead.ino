@@ -10,10 +10,23 @@
 #define CLK2 2
 #define DT2 3
 
+extern int rLastStateCLK;// = digitalRead(CLK);
+extern int lLastStateCLK;// = digitalRead(CLK2);
+extern struct retVal r;
+extern struct retVal l;
+extern int lCurrentStateCLK;
+extern int rCurrentStateCLK;
+extern unsigned long secondCount;
+extern int lCounter;
+extern int lLastTick;
+extern int rCounter;
+extern int rLastTick;
 
 
 void setup() {
   // Set encoder pins as inputs
+  rLastStateCLK = digitalRead(CLK);
+  lLastStateCLK = digitalRead(CLK2);
   pinMode(CLK,INPUT);
   pinMode(CLK2, INPUT);
   pinMode(DT,INPUT);
@@ -22,8 +35,7 @@ void setup() {
   Serial.begin(9600);
 
   // Read the initial state of CLK
-  rLastStateCLK = digitalRead(CLK);
-  lLastStateCLK = digitalRead(CLK2);
+
 }
 
 void loop() {
