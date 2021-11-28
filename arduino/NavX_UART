@@ -1,0 +1,37 @@
+#include <Wire.h>
+#include "AHRSProtocol.h"             // navX-Sensor Register Definition header file
+
+byte data[512];
+
+#define ITERATION_DELAY_MS                   10
+#define NAVX_SENSOR_DEVICE_I2C_ADDRESS_7BIT  0x32
+#define NUM_BYTES_TO_READ                    8
+
+void setup()
+{
+  Serial.begin(115200);
+  Wire.begin(); // join i2c bus (address optional for master)
+
+  for ( int i = 0; i < sizeof(data); i++ ) {
+      data[i] = 0;
+  }
+}
+
+int register_address = NAVX_REG_YAW_L;
+
+void loop()
+{
+Wire.beginTransmission(0x32);
+Wire.write(NAVX_REG_YAW_L);
+Wire.write(2);
+Wire.endTransmission();
+float angle = IMURegisters::decodeProtocolSignedHundredthsFloat(Wire.read());
+Serial.print(angle);
+Wire.beginTransmission(0x32);
+Wire.requestFrom(0x32,32);
+while(Wire.available()) { // slave may send less than requested
+data = Wire.read();
+}
+Wire.endTransmission();
+
+}
