@@ -52,4 +52,3 @@ These can be organized under the binary values 0,1,2,3 to pick the correct incre
    
  When get values, i take my last vals and my current vals, plug them into the array, and recieve the appropriate increment. I then print out the counter whenever i recieve an increment (not equal to the last recorded counter value, same logic).
  
-
