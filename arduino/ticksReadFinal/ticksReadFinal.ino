@@ -2,73 +2,52 @@
 //CLKs attatched to pins 2 and 3 for interrupts
 //right
 #define CLK_2 2
-#define DT_2 5
-//left
-#define CLK 3
-#define DT 6
+#define DT_2 3
 
-int counterL = 0;
-int counterR = 0;
-int currentStateCLK;
-int currentStateCLKR;
+int counter = 0;
+int lasCount = 0;
+int currentCLK;
 int currentDT;
-int currentDTR;
+int CLK;
+int DT;
+byte last;
+bool skip_val = true;
+// [cur][las]
+const int dirMap[4][4] = {{0,-1,1,0},
+                          {1,0,0,-1},
+                          {-1,0,0,1},
+                          {0,1,-1,0}};
+//0 is CW
+
 
 void setup() {
   // Set encoder pins as inputs
   pinMode(CLK_2,INPUT);
-  pinMode(CLK, INPUT);
   pinMode(DT_2, INPUT);
-  pinMode(DT,INPUT);
-
-
-  attachInterrupt(digitalPinToInterrupt(CLK), outP,CHANGE);
-  attachInterrupt(digitalPinToInterrupt(CLK_2), outP, CHANGE);
-
-
+  
   Serial.begin(9600);
 
 }
 
 //left
 void outP() {
-  currentStateCLK = digitalRead(CLK);
-  currentStateCLKR = digitalRead(CLK_2);
-  currentDT = digitalRead(DT);
-  currentDTR = digitalRead(DT_2);
-  if(currentStateCLK == 1) {
-    if(currentDT != currentStateCLK) {
-      counterL --;
-    }
-    else if(currentDT == currentStateCLK){
-      counterL ++;
-    }
-  }
-
-  
-  Serial.print(counterL);
-  Serial.print(" ");
-  Serial.print(counterR*-1);
-  Serial.println();
-}
-
-//right
-void outR() {
-  currentStateCLK = digitalRead(CLK_2);
+  lasCount = counter;
+  byte current;
+  currentCLK = digitalRead(CLK_2);
   currentDT = digitalRead(DT_2);
-  if(currentStateCLK == 1) {
-    if(currentDT != currentStateCLK) {
-      counterR --;
-    }
-    else if(currentDTR == currentStateCLKR){
-      counterR ++;
-    }
+  current = (currentCLK << 1) | (currentDT);
+  last = (CLK << 1) | (DT);
+  counter += dirMap[current][last];
+  CLK = currentCLK;
+  DT = currentDT;
+  if (counter != lasCount) {
+    Serial.println(counter);
+    Serial.println();
   }
-  Serial.print(counterL);
-  Serial.print(counterR);
-  Serial.println();
+  
 }
-
 
 void loop() {
+   outP();
+ 
 }
